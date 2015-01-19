@@ -39,7 +39,7 @@
 			// 데이터베이스 연결정보를 이용해 Connection 인스턴스 확보
 			conn = DriverManager.getConnection(jdbc_url,"jspbook","1234");
 			String sql1 = "select count(boardno) from board";
-			String sql2 = "select boardno, title,usernameboard, content, date from jspdb.board order by boardno DESC";
+			String sql2 = "select boardno, title,usernameboard, content, date, uploadfilename  from jspdb.board order by boardno DESC";
 			pstmt = conn.prepareStatement(sql1);
 			rs1=pstmt.executeQuery();
 			pstmt = conn.prepareStatement(sql2);
@@ -66,7 +66,17 @@
   <p><%=rs2.getString("content")%></p> 
   <p>작성자 : <%=rs2.getString("usernameboard")%></p> 
   <p>작성시간 : <%=today%></p> 
-  </div></div><hr><hr>  <%
+
+  <p>첨부파일 : <%=rs2.getString("uploadfilename")%></p>
+  <form action="process_down.jsp"> 
+<input type=hidden name="fileName" value="<%=rs2.getString("uploadfilename")%>"> 
+<input type="submit" value="다운로드"> 
+</form>
+  </div></div>
+  
+
+   
+  <hr><hr>  <%
   		
 			}
 			
