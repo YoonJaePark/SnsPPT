@@ -64,9 +64,13 @@
 				  <div class='post'> 
   <h2><%=rs2.getString("title")%></h2> 
   <p><%=rs2.getString("content")%></p> 
+   <%if(rs2.getString("uploadfilename").contains(".ppt")){
+	%><img src="upload/img/<%=rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."))%>1.jpg"class="img-responsive" alt="Responsive image"><% 
+  }if(rs2.getString("uploadfilename").contains(".jpg")){%>
+  <img src="upload/<%=rs2.getString("uploadfilename")%>" class="img-responsive" alt="Responsive image"><% 
+  }%>
   <p>작성자 : <%=rs2.getString("usernameboard")%></p> 
   <p>작성시간 : <%=today%></p> 
-
   <p>첨부파일 : <%=rs2.getString("uploadfilename")%></p>
   <form action="process_down.jsp"> 
 <input type=hidden name="fileName" value="<%=rs2.getString("uploadfilename")%>"> 
