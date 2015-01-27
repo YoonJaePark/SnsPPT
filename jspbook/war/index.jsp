@@ -1,7 +1,8 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html;charset=utf-8" import="java.sql.*"%>
 <jsp:include page="header.jsp" flush="false"/>
-
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
  <style type="text/css"> 
  
 	 body {  padding-bottom: 40px; background-color: f5f5f5; } 
@@ -50,9 +51,6 @@
 			// username 값을 입력한 경우 sql 문장을 수행.
 			%>        <div class="row row-offcanvas row-offcanvas-right">
         <div class="col-xs-12 col-sm-9">
-          <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-          </p>
           <div class="row">
             <div class="col-6 col-sm-6 col-lg-4">      <%
 				while(rs2.next()){

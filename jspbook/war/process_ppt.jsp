@@ -13,7 +13,11 @@
 <%@page import="javax.imageio.ImageIO"%>
 <%@page import="org.apache.poi.hslf.model.Slide"%>
 <%@page import="org.apache.poi.hslf.usermodel.SlideShow"%>
- 
+<%@page import="org.apache.poi.hwpf.HWPFDocument"%>
+<%@page import="org.apache.poi.hwpf.extractor.WordExtractor"%>
+<%@page import="org.apache.poi.hwpf.usermodel.Range"%>
+<%@page import="org.apache.poi.poifs.filesystem.POIFSFileSystem"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -21,7 +25,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+ 
 
 <%
 
@@ -34,7 +38,7 @@
 		FileInputStream is = new FileInputStream(pptFile);
  
 		SlideShow ppt = new SlideShow(is);
- 
+ 		
 		// PPT파일 닫기
 		is.close();
  
