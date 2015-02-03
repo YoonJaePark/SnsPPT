@@ -3,6 +3,8 @@
 <% request.setCharacterEncoding("utf-8"); %>
 
 <%
+
+
 	// 데이터베이스 연결관련 변수 선언
 	Connection conn = null;
 	PreparedStatement pstmt = null;

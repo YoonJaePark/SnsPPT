@@ -1,6 +1,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html;charset=utf-8" import="java.sql.*"%>
 <jsp:include page="header.jsp" flush="false"/>
+
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
  <style type="text/css"> 
@@ -63,7 +64,7 @@
   <h2><%=rs2.getString("title")%></h2> 
   <p><%=rs2.getString("content")%></p> 
    <%if(rs2.getString("uploadfilename").contains(".ppt")){
-	%><img src="upload/img/<%=rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."))%>1.jpg"class="img-responsive" alt="Responsive image"><% 
+	%><img src="upload/img/<%=rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."))%>1.jpg"class="img-responsive" alt="Responsive image" onclick="lightbox()"><% 
   }if(rs2.getString("uploadfilename").contains(".jpg")){%>
   <img src="upload/<%=rs2.getString("uploadfilename")%>" class="img-responsive" alt="Responsive image"><% 
   }%>

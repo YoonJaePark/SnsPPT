@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.sql.*"%>
-
+<%@ page import="java.util.Enumeration" %> 
 
 <!DOCTYPE html>
 <html>
@@ -30,9 +30,30 @@
       <script src="../../assets/js/html5shiv.js"></script>
       <script src="../../assets/js/respond.min.js"></script>
     <![endif]-->
+     <script src = "http://code.jquery.com/jquery-1.10.2.js">
+ 
+    
+    </script>
+  	<script language="JavaScript">
+  	function check_login(form){
+		if(form.username.value==""){
+			alert('아이디를 입력하세요.');
+			form.username.focus();
+		}else if(form.passwd.value==""){
+			alert('이름을 입력하세요.');
+			form.passwd.focus();
+		}else{
+			form.submit();
+		}
+		return false;
+	}
+  
+  </script>
   </head>
 
   <body>
+  
+  
  <nav class="navbar navbar-default" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
@@ -44,7 +65,7 @@
     </button>
     <a class="navbar-brand" href="index.jsp">Brand</a>
   </div>
- 
+
  <% 		int count= 0;
 			Connection conn = null;
 			PreparedStatement pstmt = null;
@@ -61,7 +82,7 @@
 				conn = DriverManager.getConnection(jdbc_url,"jspbook","1234");
 
 				// Connection 클래스의 인스턴스로 부터 SQL  문 작성을 위한 Statement 준비
-				String sql2 = "SELECT * FROM jspdb.friend_info where friend_request = "+(String)session.getAttribute("loginid")+" and friend_state=1";
+				String sql2 = "SELECT * FROM jspdb.friend_info where friend_request = '"+(String)session.getAttribute("loginid")+"' and friend_state=1";
 				pstmt = conn.prepareStatement(sql2);
 				rs=pstmt.executeQuery();
 				while(rs.next()){
@@ -75,14 +96,22 @@
 			}
 			
  %>
- 
+   
 
-        <%	
+        <%	  
+
+ 
+      
+        
+       
 	String id = (String)session.getAttribute("loginid"); //#로그인한#id를#체크#
 	if (id != null) { //#로그인상태#
 		%>  
 		  <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <form class="navbar-form navbar-left" role="search" method="post" action="access_user.jsp">
+        <button type="submit" class="btn btn-large btn-primary">현재사용자</button>
+           </form>
     <form class="navbar-form navbar-left" role="search" method="post" action="search.jsp">
       <div class="form-group">
         <input type="text" class="form-control" placeholder="Search" name=searchname>
@@ -90,30 +119,32 @@
         </div>
            </form>
             <form class="navbar-form navbar-right" method="post" action="process_responseFriend.jsp">
-           	       <div class="btn-group">
+           	<div class="btn-group">
             <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="glyphicon glyphicon-user">&nbsp;</span><span class="badge pull-right"><%if(count!=0){%><%=count%><%} %></span> </button>
             <ul class="dropdown-menu">
             	<%if(count==0) {%>
                 <li><a href="#">친구 요청이 없습니다</a></li>
                 <li class="divider"></li>
-              <%} while(rs.next()){%>
+              <%}else{ while(rs.next()){%>
            	 <div>
               <li><a href="#"><%=rs.getString("username")%></a>
               <input type=hidden name="friend_rname" value="<%=rs.getString("username")%>"> 
               <button type="submit" class="btn btn-xs btn-primary" name="state" value=2>수락</button>
-              <button type="submit" class="btn btn-xs btn-primary" name="state" value=3>거절</button></li></div>
+              <button type="submit" class="btn btn-xs btn-primary" name="state" value=3>거절</button>
+              </li></div>
              <li class="divider"></li>
-             <%} %>
+             <%}} %>
             </ul>
         </div>
            	<a href="write.jsp">새 글 작성</a>
 			<a href="process_logout.jsp"><%= id+"님"%> 로그아웃</a>
 			</form>
+			
    </div>
  
         <% } else { %> 
           <div class="collapse navbar-collapse navbar-ex1-collapse">
-  		  <form class="navbar-form navbar-right" action="process_login.jsp" method="post" role="search">
+  		  <form class="navbar-form navbar-right" action="process_login.jsp" method="post" role="search" onsubmit="return check_login(this)">
   		      <div class="form-group">
          <input type="text" name=username class="form-control" placeholder="사용자 ID"> 
 	     <input type="password" name=passwd class="form-control" placeholder="사용자 암호">
@@ -134,4 +165,5 @@
 %>
   </body>
 
-</html>
+
+	</html>

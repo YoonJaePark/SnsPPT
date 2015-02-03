@@ -28,12 +28,12 @@
 		conn = DriverManager.getConnection(jdbc_url,"jspbook","1234");
 		
 		if(state.equals("3")){
-			 sql = "DELETE FROM jspdb.friend_info where username="+request.getParameter("friend_rname")+" and friend_request= "+(String)session.getAttribute("loginid");
+			 sql = "DELETE FROM jspdb.friend_info where username='"+request.getParameter("friend_rname")+"' and friend_request= '"+(String)session.getAttribute("loginid")+"'";
 		
 		}else{
 		
 		// Connection 클래스의 인스턴스로 부터 SQL  문 작성을 위한 Statement 준비
-			 sql = "UPDATE jspdb.friend_info set friend_state= "+state+" where username="+request.getParameter("friend_rname")+" and friend_request= "+(String)session.getAttribute("loginid");
+			 sql = "UPDATE jspdb.friend_info set friend_state= "+state+" where username='"+request.getParameter("friend_rname")+"' and friend_request= '"+(String)session.getAttribute("loginid")+"'";
 		}
 		pstmt = conn.prepareStatement(sql);
 	

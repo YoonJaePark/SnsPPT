@@ -4,6 +4,7 @@
 <jsp:include page="header.jsp" flush="false"/>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<%@ page import="java.util.Enumeration" %> 
 
 <%
 int cont=0;
@@ -43,7 +44,7 @@ if (id != null) { //#로그인상태#
 			  <p><%=rname%></p> 
 				 </form></div>	
 				 
-				 <%String sql1 = "SELECT friend_info.username, friend_info.friend_request FROM jspdb.jdbc_test left join jspdb.friend_info on jdbc_test.username=friend_info.username where friend_info.username="+rname+" or friend_info.friend_request="+rname;
+				 <%String sql1 = "SELECT friend_info.username, friend_info.friend_request FROM jspdb.jdbc_test left join jspdb.friend_info on jdbc_test.username=friend_info.username where friend_info.username='"+rname+"' or friend_info.friend_request='"+rname+"'";
 		pstmt = conn.prepareStatement(sql1);
 		rs1=pstmt.executeQuery();
 		while(rs1.next()){
@@ -72,8 +73,8 @@ if (id != null) { //#로그인상태#
 	 conn.close();    
 	 pstmt.close();
 	 
-	 
-
+	  
+ 	
 }
 %>
 
