@@ -15,10 +15,11 @@
 <%@page import="org.apache.poi.hslf.model.Slide"%>
 <%@page import="org.apache.poi.hslf.usermodel.SlideShow"%>
 <% request.setCharacterEncoding("utf-8"); %> 
+
  
 <% 
 
-String saveDir = "C:\\Users\\ParkYoonJae\\git\\SnsPPT\\jspbook\\war\\upload";
+String saveDir = "C:\\Users\\sangwookim\\git\\SnsPPT\\jspbook\\war\\upload";
 int maxSize = 1024*1024*10;
 String encType = "UTF-8";
 
@@ -49,31 +50,22 @@ stmt=conn.createStatement();
 rs=stmt.executeQuery(sql1);			 
 rs.next(); 
 int boardno=(rs.getInt(1)+1); 
-String sql2 = "insert into board values(?,?,?,?,?,?)"; 
+String sql2 = "insert into board values(?,?,?,?,?,?,?)"; 
  		pstmt = conn.prepareStatement(sql2); 
  		pstmt.setInt(1, boardno); 
  		pstmt.setString(2,username); 
  		pstmt.setString(3,multipartRequest.getParameter("title")); 
  		pstmt.setString(4,multipartRequest.getParameter("content")); 
  		pstmt.setLong(5,now); 
- 		pstmt.setString(6,o_name);  
- 		// username 값을 입력한 경우 sql 문장을 수행. 
- 		if(multipartRequest.getParameter("title") != null) { 
- 			pstmt.executeUpdate(); 
-		} 
- 	} 
-	catch(Exception e) { 
- 		System.out.println(e); 
-	} 
- conn.close();     
-	System.out.printf("%s",o_name);
-	
+ 		pstmt.setString(6,o_name); 
+ 		
 	///ppt jpg 작업
 
 	if(o_name.contains(".ppt")){
-		String pptFile = "C:\\Users\\ParkYoonJae\\git\\SnsPPT\\jspbook\\war\\upload\\"+o_name;
-		String cvtImgFile = "C:\\Users\\ParkYoonJae\\git\\SnsPPT\\jspbook\\war\\upload\\img\\";
- 		
+		String pptFile = "C:\\Users\\sangwookim\\git\\SnsPPT\\jspbook\\war\\upload\\"+o_name;
+		String cvtImgFile = "C:\\Users\\sangwookim\\git\\SnsPPT\\jspbook\\war\\upload\\img\\";
+		
+		int slide_count = 0;
 		// PPT파일
 		FileInputStream is = new FileInputStream(pptFile);
  
@@ -84,10 +76,18 @@ String sql2 = "insert into board values(?,?,?,?,?,?)";
  
 		Dimension pgsize = ppt.getPageSize();
  
-		Slide[] slide = ppt.getSlides();
- 
-		for (int i = 0; i < slide.length; i++) {
- 
+		Slide[] slide = ppt.getSlides(); 
+		
+		pstmt.setInt(7, slide.length);
+		
+		// username 값을 입력한 경우 sql 문장을 수행. 
+		 if(multipartRequest.getParameter("title") != null) { 
+				pstmt.executeUpdate();			} 
+		
+	
+		
+		 for (int i = 0; i < slide.length; i++) {
+		
 			BufferedImage img = new BufferedImage(pgsize.width, pgsize.height,
 					BufferedImage.TYPE_INT_RGB);
 			Graphics2D graphics = img.createGraphics();
@@ -105,7 +105,16 @@ String sql2 = "insert into board values(?,?,?,?,?,?)";
 			ImageIO.write(img, "jpg", oout);
 			oout.close();
 		}
+		 
+		 //return slide_count;
 	}
+	
+} 
+catch(Exception e) { 
+		System.out.println(e); 
+} 
+conn.close();     
+System.out.printf("%s",o_name);
 response.sendRedirect("index.jsp"); 
 %> 
    

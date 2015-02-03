@@ -22,7 +22,7 @@
 		conn = DriverManager.getConnection(jdbc_url,"jspbook","1234");
 		Statement stmt = conn.createStatement();
 		// Connection 클래스의 인스턴스로 부터 SQL  문 작성을 위한 Statement 준비
-		String sql = "select username,passwd from jdbc_test";
+		String sql = "select username ,passwd from jdbc_test";
 		ResultSet rs = stmt.executeQuery(sql);
 		// username 값을 입력한 경우 sql 문장을 수행.
 		while(rs.next())

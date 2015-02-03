@@ -141,7 +141,6 @@
    <% String src = rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."));
    	System.out.println(src);
     int a = rs2.getInt("slidelength");System.out.println(a);
-    boolean swape = false;
   
     for(int i = 0;i<a;i++) {  %>
 	<a class="fancybox-thumbs" data-fancybox-group="thumb<%=src%>"  title ="<%=rs2.getString("title")%>"
