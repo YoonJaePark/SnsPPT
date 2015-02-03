@@ -4,7 +4,80 @@
 
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
- <style type="text/css"> 
+ 	
+<!-- Add jQuery library -->
+	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+
+	<!-- Add mousewheel plugin (this is optional) -->
+	<script type="text/javascript" src="js/jquery.mousewheel.pack.js?v=3.1.3"></script>
+
+	<!-- Add fancyBox main JS and CSS files -->
+	<script type="text/javascript" src="js/jquery.fancybox.pack.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />
+	
+	<!-- Add Button helper (this is optional) -->
+	<link rel="stylesheet" type="text/css" href="css/jquery.fancybox-buttons.css?v=1.0.5" />
+	<script type="text/javascript" src="js/jquery.fancybox-buttons.js?v=1.0.5"></script>
+
+	<!-- Add Thumbnail helper (this is optional) -->
+	<link rel="stylesheet" type="text/css" href="css/jquery.fancybox-thumbs.css?v=1.0.7" />
+	<script type="text/javascript" src="js/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+			$('.fancybox-thumbs').fancybox({
+				
+				prevEffect : 'fade',
+				nextEffect : 'fade',
+
+				closeBtn  : true,
+				arrows    : true,
+				nextClick : true,
+				padding : 0,
+				
+				
+				
+			    beforeShow: function () {
+			    	
+			        },
+			    
+				afterShow: function() {
+					
+					$(".fancybox-title").wrapInner('<div />').show();
+			        
+			        $(".fancybox-wrap").hover(function() {
+			            $(".fancybox-title").show();
+			        }, function() {
+			            $(".fancybox-title").hide();
+			        });
+			    },
+			   
+				helpers : {				
+					
+					thumbs : {
+						title	: {
+							type : 'over' 
+						},
+						
+						width  : 50,
+						height : 50,
+						
+						source : function( item ) {
+							//$.fancybox.next();
+							$.fancybox.jumpto( $(this).data('index'));
+							return item.href.replace('1.jpg','1.jpg');
+		                    
+		                }
+					}
+				}
+			}); 
+			
+		});
+	</script> 	
+	
+	
+ 	<style type="text/css"> 
  
 	 body {  padding-bottom: 40px; background-color: f5f5f5; } 
 
@@ -15,14 +88,14 @@
 	} 
 	.form-signin .form-signin-heading { margin-bottom: 10px; } 
 	.form-signin input { font-size: 16px; height: auto; margin-bottom: 15px; padding: 7px 9px; } 
+	
+	
 	</style> 
-	
-	
-	
-	
+
 	
 	<%	
 	String id = (String)session.getAttribute("loginid"); //#로그인한#id를#체크#
+
 	if (id != null) { //#로그인상태#
 		// 데이터베이스 연결관련 변수 선언
 		Connection conn = null;
@@ -41,7 +114,7 @@
 			// 데이터베이스 연결정보를 이용해 Connection 인스턴스 확보
 			conn = DriverManager.getConnection(jdbc_url,"jspbook","1234");
 			String sql1 = "select count(boardno) from board";
-			String sql2 = "select boardno, title,usernameboard, content, date, uploadfilename  from jspdb.board order by boardno DESC";
+			String sql2 = "select boardno, title,usernameboard, content, date, uploadfilename, slidelength from jspdb.board order by boardno DESC";
 			pstmt = conn.prepareStatement(sql1);
 			rs1=pstmt.executeQuery();
 			pstmt = conn.prepareStatement(sql2);
@@ -50,10 +123,13 @@
 			total=rs1.getInt(1);
 			
 			// username 값을 입력한 경우 sql 문장을 수행.
-			%>        <div class="row row-offcanvas row-offcanvas-right">
+			%>       
+			
+			 <div class="row row-offcanvas row-offcanvas-right">
         <div class="col-xs-12 col-sm-9">
           <div class="row">
-            <div class="col-6 col-sm-6 col-lg-4">      <%
+            <div class="col-6 col-sm-6 col-lg-4">
+             <%
 				while(rs2.next()){
 				long date=rs2.getLong("date");
 				SimpleDateFormat Current=new SimpleDateFormat("yyyy/MM/dd/hh:mm");
@@ -63,11 +139,20 @@
 				  <div class='post'> 
   <h2><%=rs2.getString("title")%></h2> 
   <p><%=rs2.getString("content")%></p> 
-   <%if(rs2.getString("uploadfilename").contains(".ppt")){
-	%><img src="upload/img/<%=rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."))%>1.jpg"class="img-responsive" alt="Responsive image" onclick="lightbox()"><% 
-  }if(rs2.getString("uploadfilename").contains(".jpg")){%>
-  <img src="upload/<%=rs2.getString("uploadfilename")%>" class="img-responsive" alt="Responsive image"><% 
-  }%>
+
+   <% String src = rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."));
+   	System.out.println(src);
+    int a = rs2.getInt("slidelength");System.out.println(a);
+    boolean swape = false;
+  
+    for(int i = 0;i<a;i++) {  %>
+	<a class="fancybox-thumbs" data-fancybox-group="thumb<%=src%>"  title ="<%=rs2.getString("title")%>"
+	href="upload/img/<%=rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."))+(i+1)%>.jpg"> <% }%>
+	
+	<!-- 게시물에 노출된 표지 -->
+	<img src="upload/img/<%=rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."))%>1.jpg" > 
+	</a>
+
   <p>작성자 : <%=rs2.getString("usernameboard")%></p> 
   <p>작성시간 : <%=today%></p> 
   <p>첨부파일 : <%=rs2.getString("uploadfilename")%></p>

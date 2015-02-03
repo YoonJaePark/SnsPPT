@@ -368,6 +368,8 @@
         <url-pattern>*.jsp</url-pattern>
         <url-pattern>*.jspx</url-pattern>
     </servlet-mapping>
+  
+ 
 
     <!-- The mapping for the SSI servlet -->
 <!--
@@ -4604,4 +4606,5 @@
         <welcome-file>index.htm</welcome-file>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
 </web-app>
