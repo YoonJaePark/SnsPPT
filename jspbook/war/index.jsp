@@ -24,8 +24,34 @@
 	<script type="text/javascript" src="js/jquery.fancybox-thumbs.js?v=1.0.7"></script>
 
 	<script type="text/javascript">
+	 	
+		var aaa = null;
+	    
+		/*window.onload = function() {
+	    var ex = document.getElementById('ex');
+	    };	*/
+	
+	    function on() {
+	    	location.href = './Edit_ppt.jsp?aa='+aaa;
+	    }
+	    
+	    
+		$(document).ready(function(){
+		       $('img').click(function(){
+			         //alert($('img').attr("src"));	
+			         var index = $("img").index(this);
+			         aaa = $("img:eq(" + index + ")").attr("src");
+			         //alert( $("img:eq(" + index + ")").attr("src"));
+			         /*
+			         $("test").find('img').each(function(){ 
+			        	 alert($(this).attr('src')); 
+			        	 });*/ 
+			       });
+			   }); 
+	
+	 //window.open('#');
+
 		$(document).ready(function() {
-			
 			$('.fancybox-thumbs').fancybox({
 				
 				prevEffect : 'fade',
@@ -34,38 +60,38 @@
 				closeBtn  : true,
 				arrows    : true,
 				nextClick : true,
-				padding : 0,
-				
+				padding : 5,
 				
 				
 			    beforeShow: function () {
+			    	if (this.title) {
+		                // New line
+		                this.title += '<br />';
 			    	
-			        },
+			    		// Add tweet button
+	                	this.title += '<button id="ex" type="submit" onclick="on()">Edit</button>';
+	                	
+	                	
+			    		}     
+			    	},
 			    
 				afterShow: function() {
-					
 					$(".fancybox-title").wrapInner('<div />').show();
-			        
-			        $(".fancybox-wrap").hover(function() {
-			            $(".fancybox-title").show();
-			        }, function() {
-			            $(".fancybox-title").hide();
-			        });
 			    },
 			   
-				helpers : {				
-					
+				helpers : {			
+					title	: {
+						type : 'inside' 
+					},
 					thumbs : {
-						title	: {
-							type : 'over' 
-						},
-						
+							
 						width  : 50,
 						height : 50,
-						
+	
 						source : function( item ) {
 							//$.fancybox.next();
 							$.fancybox.jumpto( $(this).data('index'));
+							
 							return item.href.replace('1.jpg','1.jpg');
 		                    
 		                }
@@ -135,18 +161,19 @@
 				SimpleDateFormat Current=new SimpleDateFormat("yyyy/MM/dd/hh:mm");
 				String today=Current.format(date);
 				%> 
-				<div class="container"> 
-				  <div class='post'> 
+				<div class="container" > 
+				  <div class='post' > 
   <h2><%=rs2.getString("title")%></h2> 
   <p><%=rs2.getString("content")%></p> 
 
-   <% String src = rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."));
+   <% String src = rs2.getString("uploadfilename");
    	System.out.println(src);
     int a = rs2.getInt("slidelength");System.out.println(a);
   
     for(int i = 0;i<a;i++) {  %>
-	<a class="fancybox-thumbs" data-fancybox-group="thumb<%=src%>"  title ="<%=rs2.getString("title")%>"
-	href="upload/img/<%=rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."))+(i+1)%>.jpg"> <% }%>
+	<a class="fancybox-thumbs" data-fancybox-group="thumb<%=src%>"  title ="<%=rs2.getString("title")%>" id = "test"
+	href="upload/img/<%=rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."))+(i+1)%>.jpg" > <% }%>
+	
 	
 	<!-- 게시물에 노출된 표지 -->
 	<img src="upload/img/<%=rs2.getString("uploadfilename").substring(0, rs2.getString("uploadfilename").indexOf("."))%>1.jpg" > 
