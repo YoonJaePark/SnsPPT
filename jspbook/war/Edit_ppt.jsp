@@ -16,7 +16,7 @@ var eqSp = sp[1].split('=');
 
 //document.write(eqSp[0]);//변수이름
 //document.write('<br>');
-document.write(eqSp[1]);//변수값
+//document.write(eqSp[1]);//변수값
 
 //alert(eqSp[0]);
 alert(eqSp[1]);
